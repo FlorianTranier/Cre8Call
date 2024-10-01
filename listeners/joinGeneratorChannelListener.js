@@ -1,11 +1,11 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Events, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Events, ModalBuilder, StringSelectMenuBuilder, TextInputBuilder, TextInputStyle } from 'discord.js'
 
 const actionsRow = () => {
   const row = new ActionRowBuilder()
   row.addComponents(
     new ButtonBuilder()
-      .setCustomId('rename')
-      .setLabel('Rename')
+      .setCustomId('configure')
+      .setLabel('🛠️ Configure')
       .setStyle(ButtonStyle.Primary)
   )
 
@@ -20,21 +20,33 @@ const setupGeneratorChannelListener = (client, { redis }) => {
   client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isButton()) return
 
-    if (interaction.customId === 'rename') {
+    if (interaction.customId === 'configure') {
       const member = await redis.get(`tmpChannel:${interaction.channelId}`)
       if (member === interaction.member.id) {
         const modal = new ModalBuilder()
           .setTitle('Rename your channel')
-          .setCustomId('renameChannel')
+          .setCustomId('configureChannel')
 
         const firstRow = new ActionRowBuilder().addComponents(
           new TextInputBuilder()
             .setLabel('Enter a new name for your channel')
             .setCustomId('newName')
             .setStyle(TextInputStyle.Short)
+            .setRequired(false)
+            .setValue(interaction.channel.name)
         )
 
-        modal.addComponents(firstRow)
+        const secondRow = new ActionRowBuilder().addComponents(
+          new TextInputBuilder()
+            .setCustomId('maxUsers')
+            .setLabel('Max users (0 for unlimited)')
+            .setMaxLength(2)
+            .setStyle(TextInputStyle.Short)
+            .setRequired(false)
+            .setValue(interaction.channel.userLimit.toString())
+        )
+
+        modal.addComponents(firstRow, secondRow)
 
         await interaction.showModal(modal)
       }
@@ -44,12 +56,14 @@ const setupGeneratorChannelListener = (client, { redis }) => {
   client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isModalSubmit()) return
 
-    if (interaction.customId === 'renameChannel') {
+    if (interaction.customId === 'configureChannel') {
       const member = await redis.get(`tmpChannel:${interaction.channelId}`)
       if (member === interaction.member.id) {
         const newChannelName = interaction.fields.getField('newName').value
+        const maxUsers = parseInt(interaction.fields.getField('maxUsers').value)
         await interaction.channel.setName(newChannelName)
-        await interaction.reply({ content: 'Channel renamed!', ephemeral: true })
+        await interaction.channel.setUserLimit(maxUsers)
+        await interaction.reply({ content: 'Channel updated!', ephemeral: true })
       }
     }
   })
