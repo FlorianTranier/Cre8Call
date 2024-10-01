@@ -1,0 +1,3 @@
+type Providers = {
+  redis: RedisClient;
+}
