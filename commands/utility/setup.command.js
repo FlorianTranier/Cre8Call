@@ -1,8 +1,9 @@
-import { SlashCommandBuilder, ChannelType } from 'discord.js'
+import { SlashCommandBuilder, ChannelType, PermissionFlagsBits } from 'discord.js'
 
 const data = new SlashCommandBuilder()
   .setName('setup')
   .setDescription('Setup the bot for your server')
+  .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
 
 /**
  * @param {Providers} providers
