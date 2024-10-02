@@ -21,7 +21,11 @@ client.login(token)
 
 const providers = {}
 
-const redis = await createClient()
+const redis = await createClient({
+  host: process.env.REDIS_HOST,
+  port: parseInt(process.env.REDIS_PORT),
+  password: process.env.REDIS_PASSWORD
+})
 await redis.connect()
 providers.redis = redis
 

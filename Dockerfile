@@ -4,9 +4,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV TZ=Europe/Paris
 
-ENV APPLICATION_ID
-ENV BOT_TOKEN
-
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 COPY commands/ commands/
