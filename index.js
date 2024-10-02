@@ -20,11 +20,12 @@ client.once(Events.ClientReady, readyClient => {
 client.login(token)
 
 const providers = {}
-
 const redis = await createClient({
-  host: process.env.REDIS_HOST,
-  port: parseInt(process.env.REDIS_PORT),
-  password: process.env.REDIS_PASSWORD
+  socket: {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: parseInt(process.env.REDIS_PORT || '6379'),
+    family: 4
+  }
 })
 await redis.connect()
 providers.redis = redis
