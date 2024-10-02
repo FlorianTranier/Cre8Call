@@ -1,5 +1,5 @@
 {
-  "name": "tempchannels",
+  "name": "cre8call",
   "version": "1.0.0",
   "description": "",
   "type": "module",
@@ -7,6 +7,7 @@
   "scripts": {
     "deploy": "node --env-file=.env deploy-commands.js",
     "local": "node --env-file=.env index.js",
+    "prod": "node deploy-commands.js && node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
