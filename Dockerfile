@@ -9,6 +9,7 @@ COPY package-lock.json package-lock.json
 COPY commands/ commands/
 COPY listeners/ listeners/
 COPY index.js index.js
+COPY deploy-commands.js deploy-commands.js
 
 RUN npm ci --only=production
 

@@ -37,12 +37,12 @@ jobs:
       - name: Show version number
         run: echo "Version is $PACKAGE_VERSION"
       - name: Build
-        run: docker build -t crea8call -f Dockerfile .
+        run: docker build -t cre8call -f Dockerfile .
       - name: Login to registry
         run: docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_REGISTRY }}
       - name: Tag latest
-        run: docker tag crea8call ${{ secrets.DOCKER_REGISTRY }}/crea8call:latest
+        run: docker tag cre8call ${{ secrets.DOCKER_REGISTRY }}/cre8call:latest
       - name: Tag current version
-        run: docker tag crea8call ${{ secrets.DOCKER_REGISTRY }}/crea8call:$PACKAGE_VERSION
+        run: docker tag cre8call ${{ secrets.DOCKER_REGISTRY }}/cre8call:$PACKAGE_VERSION
       - name: Push
-        run: docker push --all-tags ${{ secrets.DOCKER_REGISTRY }}/crea8call
+        run: docker push --all-tags ${{ secrets.DOCKER_REGISTRY }}/cre8call
