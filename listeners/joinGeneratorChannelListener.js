@@ -85,9 +85,8 @@ const setupGeneratorChannelListener = (client, { redis }) => {
         member.voice.setChannel(newTempChannel),
 
         newTempChannel.send({
-          content: `Welcome, ${member.toString() ?? member.user.username}!`,
-          components: [actionsRow()],
-          allowedMentions: { users: [member.id] }
+          content: `Welcome ! You can change the name of the channel here ⬇️`,
+          components: [actionsRow()]
         })
       ])
     }
